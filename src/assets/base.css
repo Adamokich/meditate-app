@@ -1,4 +1,15 @@
 :root {
+  --color-light: #fff;
+  --color-dark: #000;
+  --color-primary: #253334;
+  --color-primary-inverted: #69b09c;
+  --color-input-bg: #7c9a92;
+  --color-input: #bec2c2;
+  --color-light-inverted: rgba(255, 255, 255, 0.5);
+
+  --border-radius: 20px;
+  --font-family-main: 'Alegreya', serif;
+  --font-family: 'Alegreya Sans', sans-serif;
 }
 
 *,
