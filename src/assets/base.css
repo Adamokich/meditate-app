@@ -3,6 +3,7 @@
   --color-dark: #000;
   --color-primary: #253334;
   --color-primary-inverted: #69b09c;
+  --color-primary-hover: #202728;
   --color-input-bg: #7c9a92;
   --color-input: #bec2c2;
   --color-light-inverted: rgba(255, 255, 255, 0.5);
@@ -21,6 +22,9 @@
 }
 
 body {
+  font-family: var(--font-family-main);
+  color: var(--color-light);
+  background-color: var(--color-primary);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
