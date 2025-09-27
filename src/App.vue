@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import Meditates from './components/Meditates.vue'
+import Menu from './components/Menu.vue'
 </script>
 
 <template>
   <div class="app">
-    <div class="left-panel"></div>
-
-    <div class="right-panel">
-      <nav class="nav"></nav>
-
-      <ul class="meditate-list">
-        <Meditates />
-      </ul>
-    </div>
+    <Menu />
+    <RouterView />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.app {
+  padding: 40px 50px;
+  max-width: 1280px;
+  margin-inline: auto;
+}
+</style>
