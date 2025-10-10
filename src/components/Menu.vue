@@ -2,40 +2,55 @@
 import ChartIcon from '@/icons/ChartIcon.vue'
 import ExitIcon from '@/icons/ExitIcon.vue'
 import PlayIcon from '@/icons/PlayIcon.vue'
+import { useProfileStore } from '@/stores/profile.store'
+
+const profileStore = useProfileStore()
 </script>
 
 <template>
-  <nav class="menu">
-    <img class="menu-logo" src="../img/Logo.svg" alt="Логотип" />
-    <ul class="menu-list">
-      <li class="menu-item">
-        <RouterLink active-class="active-link" class="menu-link" to="/">
-          <PlayIcon />
-          Медитация
-        </RouterLink>
-      </li>
-      <li class="menu-item">
-        <RouterLink active-class="active-link" class="menu-link" to="/stat">
-          <ChartIcon />
-          Статистика
-        </RouterLink>
-      </li>
-      <li class="menu-item">
-        <RouterLink class="menu-link" to="#">
-          <ExitIcon />
-          Выход
-        </RouterLink>
-      </li>
-    </ul>
-  </nav>
+  <main class="main">
+    <nav class="menu">
+      <img class="menu-logo" src="../img/logo.svg" alt="Логотип" />
+      <ul class="menu-list">
+        <li class="menu-item">
+          <RouterLink active-class="active-link" class="menu-link" to="/meditates">
+            <PlayIcon />
+            Медитация
+          </RouterLink>
+        </li>
+        <li class="menu-item">
+          <RouterLink active-class="active-link" class="menu-link" to="/stat">
+            <ChartIcon />
+            Статистика
+          </RouterLink>
+        </li>
+        <li class="menu-item">
+          <a class="menu-link" href="#" @click="profileStore.clearToken">
+            <ExitIcon />
+            Выход
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <RouterView />
+  </main>
 </template>
 
 <style scoped>
+.main {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 85px;
+}
+
 .menu {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 90px;
+  padding-top: 40px;
 }
 
 .menu-list {

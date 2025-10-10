@@ -1,19 +1,58 @@
 <script setup lang="ts">
+import { useProfileStore } from '@/stores/profile.store'
 import ButtonFeeling from './ButtonFeeling.vue'
+import { onMounted, ref } from 'vue'
+import type { ButtonData } from '@/interfaces/buttonData.interface'
+import { useMeditatesStore } from '@/stores/meditate.store'
+
+const profileStore = useProfileStore()
+const meditatesStore = useMeditatesStore()
+const selectedFeeling = ref('')
+const buttonsData: ButtonData[] = [
+  {
+    text: 'Спокойно',
+    icon: 'calm',
+  },
+  {
+    text: 'Расслабленно',
+    icon: 'relax',
+  },
+  {
+    text: 'Фокусированно',
+    icon: 'focus',
+  },
+  {
+    text: 'Тревожно',
+    icon: 'anxiety',
+  },
+]
+
+onMounted(() => {
+  profileStore.getProfile()
+})
+
+function selectFeeling(feeling: string) {
+  selectedFeeling.value = feeling
+}
 </script>
 
 <template>
   <div class="profile">
-    <img class="profile-avatar" src="../img/avatar.png" alt="Аватар" />
     <div class="profile-info">
-      <div class="profile-title">Добро пожаловать, Наталья!</div>
+      <div class="profile-title">
+        Добро пожаловать, {{ profileStore.authorizedUser?.data.user.username }}!
+      </div>
       <p class="profile-question">Как вы сегодня себя чувствуете?</p>
     </div>
     <div class="profile-feeling">
-      <ButtonFeeling text="Спокойно" icon="calm" />
-      <ButtonFeeling text="Расслабленно" icon="relax" />
-      <ButtonFeeling text="Фокусированно" icon="focus" />
-      <ButtonFeeling text="Тревожно" icon="alarming" />
+      <ButtonFeeling
+        v-for="item in buttonsData"
+        :text="item.text"
+        :icon="item.icon"
+        @select="selectFeeling"
+        @click="meditatesStore.saveFeeling(item.icon)"
+        :feeling="selectedFeeling"
+      />
     </div>
   </div>
 </template>

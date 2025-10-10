@@ -1,24 +1,29 @@
 <script setup lang="ts">
-import AlarmingIcon from '@/icons/AlarmingIcon.vue'
+import AlarmingIcon from '@/icons/AnxietyIcon.vue'
 import CalmIcon from '@/icons/CalmIcon.vue'
 import FocusIcon from '@/icons/FocusIcon.vue'
 import RelaxIcon from '@/icons/RelaxIcon.vue'
 
 type ButtonData = {
   text: string
-  icon: 'calm' | 'focus' | 'relax' | 'alarming'
+  icon: string
 }
 
-const { text, icon } = defineProps<ButtonData>()
+const emit = defineEmits<{ (e: 'select', feeling: string): void }>()
+const { text, icon } = defineProps<ButtonData & { feeling: string }>()
 </script>
 
 <template>
   <div class="feeling-wrapper">
-    <button class="feeling-btn">
+    <button
+      class="feeling-btn"
+      :class="feeling === text ? 'active' : ''"
+      @click="() => emit('select', text)"
+    >
       <CalmIcon v-if="icon === 'calm'" />
       <RelaxIcon v-if="icon === 'relax'" />
       <FocusIcon v-if="icon === 'focus'" />
-      <AlarmingIcon class="alarm-icon" v-if="icon === 'alarming'" />
+      <AlarmingIcon class="alarm-icon" v-if="icon === 'anxiety'" />
     </button>
     <p class="feeling-text">{{ text }}</p>
   </div>
@@ -55,5 +60,9 @@ const { text, icon } = defineProps<ButtonData>()
 .feeling-btn svg {
   width: 35px;
   height: 35px;
+}
+
+.active {
+  background-color: var(--color-primary-inverted);
 }
 </style>

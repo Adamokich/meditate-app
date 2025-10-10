@@ -14,6 +14,6 @@ import RightPanel from './RightPanel.vue'
 .meditates {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
 }
 </style>
