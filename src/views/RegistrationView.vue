@@ -20,8 +20,6 @@ async function onSubmit(e: Event) {
       form.value.password,
     )
 
-    console.log(profileStore.registeredUser)
-
     if (!profileStore.registeredUser) {
       return
     }

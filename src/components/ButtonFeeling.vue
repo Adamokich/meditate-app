@@ -3,22 +3,18 @@ import AlarmingIcon from '@/icons/AnxietyIcon.vue'
 import CalmIcon from '@/icons/CalmIcon.vue'
 import FocusIcon from '@/icons/FocusIcon.vue'
 import RelaxIcon from '@/icons/RelaxIcon.vue'
-
-type ButtonData = {
-  text: string
-  icon: string
-}
+import type { ButtonData } from '@/interfaces/buttonData.interface'
 
 const emit = defineEmits<{ (e: 'select', feeling: string): void }>()
-const { text, icon } = defineProps<ButtonData & { feeling: string }>()
+const { text, icon, feeling } = defineProps<ButtonData & { selectedFeeling: string }>()
 </script>
 
 <template>
   <div class="feeling-wrapper">
     <button
       class="feeling-btn"
-      :class="feeling === text ? 'active' : ''"
-      @click="() => emit('select', text)"
+      :class="selectedFeeling === feeling ? 'active' : ''"
+      @click="() => emit('select', feeling)"
     >
       <CalmIcon v-if="icon === 'calm'" />
       <RelaxIcon v-if="icon === 'relax'" />

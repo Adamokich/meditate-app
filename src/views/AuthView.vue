@@ -16,21 +16,21 @@ onMounted(() => {
   }
 })
 
+watch(
+  () => profileStore.getToken,
+  () => {
+    if (profileStore.getToken) {
+      router.push({ name: 'main' })
+    }
+  },
+)
+
 function login(e: Event) {
   e.preventDefault()
 
   if (form.value.username && form.value.password) {
     profileStore.authProfile(form.value.username, form.value.password)
   }
-
-  watch(
-    () => profileStore.getToken,
-    () => {
-      if (profileStore.getToken) {
-        router.push({ name: 'main' })
-      }
-    },
-  )
 
   form.value = {}
 }

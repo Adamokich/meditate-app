@@ -38,7 +38,7 @@ export const router = createRouter({
   ],
 })
 
-const publicPages = ['auth', 'registration']
+const publicPages = ['auth', 'registration', 'preview']
 
 router.beforeEach((to) => {
   const profileStore = useProfileStore()

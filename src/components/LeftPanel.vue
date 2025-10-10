@@ -12,18 +12,22 @@ const buttonsData: ButtonData[] = [
   {
     text: 'Спокойно',
     icon: 'calm',
+    feeling: 'calm',
   },
   {
     text: 'Расслабленно',
     icon: 'relax',
+    feeling: 'relax',
   },
   {
     text: 'Фокусированно',
     icon: 'focus',
+    feeling: 'focus',
   },
   {
     text: 'Тревожно',
     icon: 'anxiety',
+    feeling: 'anxiety',
   },
 ]
 
@@ -47,11 +51,10 @@ function selectFeeling(feeling: string) {
     <div class="profile-feeling">
       <ButtonFeeling
         v-for="item in buttonsData"
-        :text="item.text"
-        :icon="item.icon"
+        v-bind="item"
         @select="selectFeeling"
-        @click="meditatesStore.saveFeeling(item.icon)"
-        :feeling="selectedFeeling"
+        @click="meditatesStore.saveFeeling(item.feeling)"
+        :selectedFeeling="selectedFeeling"
       />
     </div>
   </div>
