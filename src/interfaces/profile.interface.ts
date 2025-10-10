@@ -11,6 +11,16 @@ export interface Profile {
   status: string
 }
 
+export interface RegisteredUser {
+  data: {
+    email: string
+    id: number
+    username: string
+  }
+  message: string
+  status: string
+}
+
 export interface User {
   data: {
     user: {

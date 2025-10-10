@@ -38,12 +38,12 @@ export const router = createRouter({
   ],
 })
 
-const publicPages = ['auth', 'registration', 'preview']
+const publicPages = ['auth', 'registration']
 
 router.beforeEach((to) => {
   const profileStore = useProfileStore()
 
   if (!profileStore.getToken && !publicPages.includes(to.name as string)) {
-    return { name: 'preview' }
+    return { name: 'auth' }
   }
 })

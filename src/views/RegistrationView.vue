@@ -10,16 +10,27 @@ const form = ref<{ email?: string; userName?: string; password?: string }>({})
 const profileStore = useProfileStore()
 const router = useRouter()
 
-function onSubmit(e: Event) {
+async function onSubmit(e: Event) {
   e.preventDefault()
 
   if (form.value.email && form.value.userName && form.value.password) {
-    profileStore.registrationProfile(form.value.email, form.value.userName, form.value.password)
+    await profileStore.registrationProfile(
+      form.value.email,
+      form.value.userName,
+      form.value.password,
+    )
+
+    console.log(profileStore.registeredUser)
+
+    if (!profileStore.registeredUser) {
+      return
+    }
+
+    if (profileStore.registeredUser.status === 'success') {
+      form.value = {}
+      router.push({ name: 'auth' })
+    }
   }
-
-  router.push({ name: 'auth' })
-
-  form.value = {}
 }
 </script>
 
@@ -27,9 +38,12 @@ function onSubmit(e: Event) {
   <div class="auth">
     <LogoIcon class="greeting-icon" />
     <form class="auth-form" @submit="onSubmit">
-      <InputString v-model="form.email" placeholder="Электронная почта" />
+      <InputString v-model="form.email" placeholder="Электронная почта" type="email" />
       <InputString v-model="form.userName" placeholder="Имя" />
       <InputString v-model="form.password" placeholder="Пароль" type="password" />
+      <span v-if="profileStore.registeredUser?.status === 'error'" class="error">{{
+        profileStore.registeredUser.message
+      }}</span>
       <ButtonMain>Войти в приложение</ButtonMain>
     </form>
   </div>
@@ -56,5 +70,11 @@ function onSubmit(e: Event) {
   justify-content: center;
   gap: 40px;
   width: 100%;
+}
+
+.error {
+  font-size: 18px;
+  color: red;
+  width: 321px;
 }
 </style>

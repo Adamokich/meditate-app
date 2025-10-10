@@ -1,5 +1,5 @@
 import { API_ROUTES, client } from '@/api'
-import type { Profile, User } from '@/interfaces/profile.interface'
+import type { Profile, RegisteredUser, User } from '@/interfaces/profile.interface'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
@@ -8,6 +8,7 @@ const initialValue = localStorage.getItem(TOKEN_STORE_KEY)
 
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<Profile>()
+  const registeredUser = ref<RegisteredUser>()
   const authorizedUser = ref<User>()
   const token = ref<string>()
 
@@ -28,11 +29,20 @@ export const useProfileStore = defineStore('profile', () => {
   const getToken = computed(() => token.value)
 
   async function registrationProfile(email: string, username: string, password: string) {
-    await client().post(API_ROUTES.profile.registration, {
-      username,
-      email,
-      password,
-    })
+    try {
+      const { data } = await client().post<RegisteredUser>(API_ROUTES.profile.registration, {
+        username,
+        email,
+        password,
+      })
+
+      registeredUser.value = data
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'response' in error) {
+        //@ts-ignore
+        registeredUser.value = error.response.data
+      }
+    }
   }
 
   async function authProfile(username: string, password: string) {
@@ -67,5 +77,6 @@ export const useProfileStore = defineStore('profile', () => {
     clearToken,
     getProfile,
     authorizedUser,
+    registeredUser,
   }
 })

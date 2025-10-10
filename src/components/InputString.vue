@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const data = defineModel<string>()
-const { placeholder } = defineProps<{ placeholder: string }>()
+const { placeholder, type = 'text' } = defineProps<{ placeholder: string; type?: string }>()
 </script>
 
 <template>
-  <input class="input-form" v-model="data" type="text" :placeholder="placeholder" />
+  <input class="input-form" v-model="data" :type="type" :placeholder="placeholder" />
 </template>
 
 <style scoped>
