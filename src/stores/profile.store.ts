@@ -39,7 +39,7 @@ export const useProfileStore = defineStore('profile', () => {
       registeredUser.value = data
     } catch (error: unknown) {
       if (typeof error === 'object' && error !== null && 'response' in error) {
-        //@ts-ignore
+        //@ts-expect-error проверка получения объекта с ошибкой
         registeredUser.value = error.response.data
       }
     }
@@ -56,7 +56,7 @@ export const useProfileStore = defineStore('profile', () => {
       setToken(data.data.token)
     } catch (error: unknown) {
       if (typeof error === 'object' && error !== null && 'response' in error) {
-        //@ts-ignore
+        //@ts-expect-error проверка получения объекта с ошибкой
         profile.value = error.response.data
       }
     }

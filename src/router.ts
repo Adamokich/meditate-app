@@ -31,7 +31,12 @@ export const router = createRouter({
         {
           path: '/stat',
           name: 'stat',
-          component: () => import('./components/Stat.vue'),
+          component: () => import('./components/TotalStat.vue'),
+        },
+        {
+          path: '/meditateTimer',
+          name: 'meditateTimer',
+          component: () => import('./views/MeditateTimer.vue'),
         },
       ],
     },

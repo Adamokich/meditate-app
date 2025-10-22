@@ -2,23 +2,31 @@
 import IconPlay from '@/icons/IconPlay.vue'
 import { useMeditatesStore } from '@/stores/meditate.store'
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const store = useMeditatesStore()
+const router = useRouter()
 
 onMounted(() => {
   store.getMeditations()
 })
+
+function onSelectTimer(id: number) {
+  router.push({ name: 'meditateTimer' })
+
+  store.getMeditateById(id)
+}
 </script>
 
 <template>
   <ul class="meditates-list">
-    <li class="meditate-item" v-for="item in store.meditations">
+    <li class="meditate-item" v-for="item in store.meditations" :key="item.id">
       <div class="meditate-top">
         <h2 class="meditate-title">{{ item.title }}</h2>
         <div class="meditate-description">{{ item.description }}</div>
       </div>
       <div class="meditate-bottom">
-        <button class="meditate-btn">
+        <button @click="onSelectTimer(item.id)" class="meditate-btn">
           Начать
           <IconPlay />
         </button>

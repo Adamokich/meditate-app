@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router'
 const form = ref<{ username?: string; password?: string }>({})
 const profileStore = useProfileStore()
 const router = useRouter()
+const isError = ref<boolean>(false)
 
 onMounted(() => {
   if (profileStore.getToken) {
@@ -25,14 +26,22 @@ watch(
   },
 )
 
-function login(e: Event) {
+async function login(e: Event) {
   e.preventDefault()
 
   if (form.value.username && form.value.password) {
-    profileStore.authProfile(form.value.username, form.value.password)
-  }
+    await profileStore.authProfile(form.value.username, form.value.password)
 
-  form.value = {}
+    if (profileStore.profile?.status === 'succes') {
+      form.value = {}
+    } else if (profileStore.profile?.status === 'error') {
+      isError.value = !isError.value
+
+      setTimeout(() => {
+        isError.value = !isError.value
+      }, 8000)
+    }
+  }
 }
 </script>
 
@@ -42,7 +51,7 @@ function login(e: Event) {
     <form class="auth-form" @submit="login">
       <InputString v-model="form.username" placeholder="Имя пользователя" />
       <InputString v-model="form.password" placeholder="Пароль" type="password" />
-      <span v-if="profileStore.profile?.status === 'error'" class="alert">{{
+      <span v-if="isError && profileStore.profile" class="alert">{{
         profileStore.profile.message
       }}</span>
       <ButtonMain>Войти в приложение</ButtonMain>

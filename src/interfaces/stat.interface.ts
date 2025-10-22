@@ -1,4 +1,4 @@
-export interface Stat {
+export interface StatData {
   data: {
     stat: {
       id: number
@@ -15,4 +15,20 @@ export interface Stat {
   }
   message: string
   status: string
+}
+
+export interface TotalStatItem {
+  total_anxiety: number
+  total_calm: number
+  total_focus: number
+  total_minutes: number
+  total_relax: number
+}
+
+export interface TotalStat {
+  data: {
+    stats: StatData[] | null
+    summary: TotalStatItem
+    status: string
+  }
 }
