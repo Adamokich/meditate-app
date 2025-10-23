@@ -1,5 +1,11 @@
-<script setup lang="ts"></script>
+<template>
+  <div class="app">
+    <RouterView />
+  </div>
+</template>
 
-<template></template>
-
-<style scoped></style>
+<style scoped>
+.app {
+  width: 100%;
+}
+</style>
