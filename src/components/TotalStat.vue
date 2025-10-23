@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMeditatesStore } from '@/stores/meditate.store'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { checkStatBg, checkStatName } from '@/validators'
 
 const meditateStore = useMeditatesStore()

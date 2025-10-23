@@ -13,7 +13,6 @@ onMounted(() => {
 
 function onSelectTimer(id: number) {
   router.push({ name: 'meditateTimer' })
-
   store.getMeditateById(id)
 }
 </script>
