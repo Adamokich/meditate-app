@@ -50,6 +50,13 @@ export const useMeditatesStore = defineStore('meditates', () => {
     }
   }
 
+  async function saveDuration(value: number) {
+    await client().post<StatData>(API_ROUTES.stats, {
+      type: 'duration_min',
+      value,
+    })
+  }
+
   function getMeditateById(id: number) {
     const newMeditation = meditations.value.find((item) => item.id === id)
 
@@ -98,5 +105,6 @@ export const useMeditatesStore = defineStore('meditates', () => {
     removeTimerInfo,
     totalStat,
     getTotalStat,
+    saveDuration,
   }
 })

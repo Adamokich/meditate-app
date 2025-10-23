@@ -3,12 +3,13 @@ import { useMeditatesStore } from './meditate.store'
 import { computed, ref, watch } from 'vue'
 
 const TIMER_KEY = 'timer'
-const initialValue = localStorage.getItem(TIMER_KEY)
+const TIMER_KEY_INITIAL = 'initial'
+const initialTimerValue = localStorage.getItem(TIMER_KEY_INITIAL)
 
 export const useTimerStore = defineStore('timer', () => {
   const meditateStore = useMeditatesStore()
   const timer = ref<number>(0)
-  const initialTimer = ref<number>(0)
+  const initialTimer = ref<number>(initialTimerValue ? parseInt(initialTimerValue) : 0)
   const isRunning = ref<boolean>(false)
 
   let intervalId: ReturnType<typeof setInterval> | null = null
@@ -21,9 +22,10 @@ export const useTimerStore = defineStore('timer', () => {
   })
 
   function loadTimer(): void {
-    if (initialValue) {
-      timer.value = parseInt(initialValue)
-    }
+    const timerLS = localStorage.getItem(TIMER_KEY)
+    const initialLS = localStorage.getItem(TIMER_KEY_INITIAL)
+
+    timer.value = timerLS ? parseInt(timerLS) : initialLS ? parseInt(initialLS) : 0
   }
 
   function startTimer(): void {
@@ -34,10 +36,21 @@ export const useTimerStore = defineStore('timer', () => {
     intervalId = setInterval(() => {
       if (timer.value > 0) {
         timer.value--
+        savedTimer(timer.value)
       } else {
         stopTimer()
+        meditateStore.saveDuration(initialTimer.value / 60)
       }
     }, 1000)
+  }
+
+  function startMeditation(): void {
+    if (meditateStore.meditation) {
+      timer.value = meditateStore.meditation.duration_min * 60
+      initialTimer.value = timer.value
+      savedInitialTimer(timer.value)
+      savedTimer(timer.value)
+    }
   }
 
   function stopTimer(): void {
@@ -57,23 +70,21 @@ export const useTimerStore = defineStore('timer', () => {
     localStorage.setItem(TIMER_KEY, value.toString())
   }
 
-  function exitFromTimer() {
-    stopTimer()
-    localStorage.removeItem(TIMER_KEY)
-    meditateStore.removeTimerInfo()
+  function savedInitialTimer(value: number) {
+    localStorage.setItem(TIMER_KEY_INITIAL, value.toString())
   }
 
-  watch(timer, (newValue: number) => {
-    savedTimer(newValue)
-  })
+  function exitFromTimer() {
+    localStorage.removeItem(TIMER_KEY)
+    localStorage.removeItem(TIMER_KEY_INITIAL)
+    meditateStore.removeTimerInfo()
+  }
 
   watch(
     () => meditateStore.meditation,
     (meditation) => {
       if (meditation) {
-        timer.value = meditation.duration_min * 60
-        initialTimer.value = timer.value
-        localStorage.setItem(TIMER_KEY, timer.value.toString())
+        startMeditation()
       }
     },
     { immediate: true },
@@ -82,6 +93,7 @@ export const useTimerStore = defineStore('timer', () => {
   return {
     timer,
     loadTimer,
+    startMeditation,
     startTimer,
     stopTimer,
     resetTimer,

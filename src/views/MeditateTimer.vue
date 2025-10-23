@@ -7,9 +7,16 @@ import RepeatIcon from '@/icons/RepeatIcon.vue'
 import { useMeditatesStore } from '@/stores/meditate.store'
 import { useTimerStore } from '@/stores/timer.store'
 import { onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const timerStore = useTimerStore()
 const meditateStore = useMeditatesStore()
+const router = useRouter()
+
+function redirectToMain() {
+  router.push({ name: 'main' })
+  timerStore.exitFromTimer()
+}
 
 onMounted(() => {
   if (timerStore) {
@@ -19,7 +26,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (timerStore) {
-    timerStore.exitFromTimer()
+    timerStore.stopTimer()
   }
 })
 </script>
@@ -32,9 +39,7 @@ onUnmounted(() => {
       <p class="meditate-timer-descr">{{ meditateStore.description }}</p>
     </div>
     <div class="meditate-timer-actions">
-      <RouterLink to="/meditates">
-        <BackSpaceIcon class="meditate-timer-action" />
-      </RouterLink>
+      <BackSpaceIcon class="meditate-timer-action" @click="redirectToMain" />
       <ButtonTimerAction
         class="timer-btn"
         v-show="!timerStore.isRunning"
