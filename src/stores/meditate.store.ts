@@ -50,6 +50,20 @@ export const useMeditatesStore = defineStore('meditates', () => {
     }
   }
 
+  async function saveDuration(value: number) {
+    try {
+      await client().post<StatData>(API_ROUTES.stats, {
+        type: 'duration_min',
+        value
+      })
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'response' in error) {
+        //@ts-expect-error проверка получения объекта с ошибкой
+        lastFeeling.value = error.response
+      }
+    }
+  }
+
   function getMeditateById(id: number) {
     const newMeditation = meditations.value.find((item) => item.id === id)
 
@@ -98,5 +112,6 @@ export const useMeditatesStore = defineStore('meditates', () => {
     removeTimerInfo,
     totalStat,
     getTotalStat,
+    saveDuration
   }
 })

@@ -17,6 +17,7 @@ export interface StatData {
   status: string
 }
 
+
 export interface TotalStatItem {
   total_anxiety: number
   total_calm: number
